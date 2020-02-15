@@ -1,3 +1,5 @@
+version 1.0_______________________________________________________
+
 const getLongestLength = (str) => {
 
   if (str === '') {
@@ -33,4 +35,26 @@ const getLongestLength = (str) => {
     return result;
   };
   return getLonges(str);
+};
+
+version 2.0_______________________________________________________
+
+const getLongestLength = (str) => {
+  const chars = str.split('');
+  let sequence = [];
+  let maxLength = 0;
+
+  for (const char of chars) {
+    const index = sequence.indexOf(char);
+    sequence.push(char);
+    if (index !== -1) {
+      sequence = sequence.slice(index + 1);
+    }
+    const sequenceLength = sequence.length;
+    if (sequenceLength > maxLength) {
+      maxLength = sequenceLength;
+    }
+  }
+
+  return maxLength;
 };
