@@ -1,1 +1,1 @@
-![alt text](https://github.com/Nevelskoy/JavaScrypt/image/Scheme_password.svg)
+![alt text](https://github.com/Nevelskoy/JavaScrypt/blob/master/image/Scheme_password.svg)
