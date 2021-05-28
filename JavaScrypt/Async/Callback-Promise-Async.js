@@ -34,7 +34,18 @@ fsp.readFile('./first', 'utf-8')
 // Код на async/await
 import fsp from 'fs/promises';
 
-// В реальной жизни чтение файлов лучше выполнять параллельно, как в функции unionFiles выше
+// В реальной жизни чтение файлов лучше выполнять параллельно, как в функции unionFiles ниже
 const data1 = await fsp.readFile('./first', 'utf-8');
 const data2 = await fsp.readFile('./second', 'utf-8');
 await fsp.writeFile('./new-file', `${data1}${data2}`);
+
+____________________________________________________________________________________________
+const unionFiles = async (inputPath1, inputPath2, outputPath) => {
+  // Эти вызовы начинают чтение почти одновременно и не ждут друг друга
+  const promise1 = fsp.readFile(inputPath1, 'utf-8');
+  const promise2 = fsp.readFile(inputPath2, 'utf-8');
+  // Теперь дожидаемся когда они оба завершатся
+  // Данные можно сразу разложить
+  const [data1, data2] = await Promise.all([promise1, promise2]);
+  await fsp.writeFile(outputPath, `${data1}${data2}`);
+};
