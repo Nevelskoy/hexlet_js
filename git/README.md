@@ -1,3 +1,5 @@
+https://training.github.com/downloads/ru/github-git-cheat-sheet/
+
 # Основные команды git
 
 Добавление в репозиторий происходит в два шага
