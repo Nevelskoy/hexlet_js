@@ -12,3 +12,4 @@ update knitting-life done
 ...
 0612
 0712
+0812
