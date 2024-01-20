@@ -70,7 +70,7 @@ int main()
 				{5, 5, 5, 5}
 			}
 		};
-
+	stop
 	}
 
 	//б) объявите трехмерный N*M*K неинициализированный массив, 
@@ -164,11 +164,22 @@ int main()
 	//Объявите и проинициализируйте строковыми литералами два массива:
 	//двумерный массив символов и одномерный массив указателей на char. 
 	//Поясните разницу в использовании элементов таких массивов.
+#endif
+
+#if 0
 		{
 			char first[][10] = { "Happy", "New", "Year" };
 
 			const char* second[] = { "Happy", "New", "Year" };     // 1) Содержит только адрес каждого строкового литерала, 
 																   // 2) Невозможна модификация через обращение по адресу
+			first[1][1] = 'W';
+		//	second[1][2] = 'W';
+
+			first[1][0] = 'F';
+			std::cout << first[1];
+		//	std::cout << second[1];
+		
+
 		}
 #endif		
 	
@@ -251,7 +262,8 @@ int main()
 		//Теперь сортируем строки:
 			for (int i = 0; i < count_words; i++) {
 				for (int j = 0; j < count_words - i - 1; j++) {
-					if (strcmp(cPointers[j], cPointers[j + 1]) > 0) {
+				//	if (strcmp(cPointers[j], cPointers[j + 1]) > 0) {
+					if (cPointers[j][0] > cPointers[j + 1][0]) {
 						char* tmp = cPointers[j];
 						cPointers[j] = cPointers[j + 1];
 						cPointers[j + 1] = tmp;
@@ -360,7 +372,7 @@ int main()
 	}
 #endif
 	///////////////////////////////////////////////////////////////////////////
-#if 1
+#if 0
 	//Задание 4
 	//а) Объявите двухмерный ВСТРОЕННЫЙ массив элементов типа char.
 	//Сформируйте значения элементов массива с помощью генератора случайных
@@ -389,7 +401,7 @@ int main()
 	//было - '*' '_' '_' '*' '*' '_' '*' '_' '*' '_'
 	//стало: '*' '*' '*' '*' '*' '_' '_' '_' '_' '_'
 	//и распечатайте массив по строкам - "постройте распределение"
-	const size_t N = 5, M = 10;
+	const size_t N = 6, M = 10;
 	char arr[N][M];
 	char one = '*';
 	char empty = '_';
@@ -420,8 +432,8 @@ int main()
 			}
 		}
 	}
-*/
-	
+
+*/	
 	// б) Модифицируйте предыдущее задание следующим способом:
 	//После заполнения массива с помощью генератора случайных чисел
 	//"сдвиньте" звездочки по столбцам вниз и распечатайте полученное
@@ -437,6 +449,7 @@ int main()
 			}
 		}
 	}
+
 
 	std::cout << std::endl;
 	std::cout << "The array shifted:" << std::endl;
@@ -520,7 +533,7 @@ int main()
 			arr_2[i] = static_cast<double>(sum) / M;
 		}
 
-		std::cout << "The average array :" << std::endl;
+		std::cout << "The average number:" << std::endl;
 		for (size_t i = 0; i < N; i++) {
 			std::cout << std::fixed << std::setprecision(1) << *(arr_2 + i) << " | ";
 		}
@@ -536,7 +549,7 @@ int main()
 	}
 #endif
 	/////////////////////////////////////////////////////////////////////////////
-#if 0
+#if 1
 	{
 		//Задание 6. 
 			//Реализуйте задание 2, используя не встроенные, а ДИНАМИЧЕСКИЕ массивы (массив?).
@@ -555,9 +568,7 @@ int main()
 		std::cout << "Write the number of words:" << std::endl;
 		std::cin >> nStringNumber;
 		int length_word = 0;
-
-		size_t strlen(char const* _Str);
-		
+	
 		char** DataWords = new char* [nStringNumber];
 		//Цикл ввода строк:
 		int count_words = 0;
@@ -572,8 +583,9 @@ int main()
 			DataWords[i] = new char[length_word + 1];  // выделение памяти для строки
 			strcpy_s(DataWords[i], length_word + 1, buffer);
 			count_words++;
-		}
 
+		}
+		nStringNumber = count_words;
 		// Для ввода строки нужно использовать буфер "достаточного" размера. 
 		// В качестве такого буфера обычно используется встроенный массив.
 		// Для того, чтобы введенную строку  скопировать из буфера в массив  строк,
@@ -595,7 +607,15 @@ int main()
 		//Для того, чтобы пользоваться функцией strcpy, а не strcpy_s, можно
 		//  - либо объявить макрос #define _CRT_SECURE_NO_WARNINGS   (обязательно ДО всех #include !!!!!)
 		//- либо установить режим без доп. проверки на безопасность Properties->C/C++ ->General->SDL checs -> No
-
+		
+		//ТЕСТ
+		//abc
+		//aBc3
+		//ASDF
+		//23
+		//123456
+		//a1
+		//1###
 
 		//Цикл сортировки строк по методу "всплывающего пузырька" в
 		//порядке возрастания кода первого символа
@@ -631,6 +651,24 @@ int main()
 // описание задания находится в файле "Задание (игра Змейка)_7 (двумерный встроенный массив поля)_3.docx" и 
 //*****************************************************************************************************
 
+
+	//size_t N = 5;
+	//size_t M = 7;
+
+	//int* pArr = new int[N * M];
+
+	//for (size_t i = 0; i < N * M; i++) {
+	//	*(pArr + i) = rand() % 10;
+	//}
+	//std::cout << "The array is generated:" << std::endl;
+	//for (size_t i = 0; i < N; i++) {
+	//	for (size_t j = 0; j < M; j++) {
+	//		std::cout << pArr[i * M + j];
+	//	}
+	//	std::cout << std::endl;
+	//}
+	//int a = 5;
+	//delete[] pArr;
 
 	return 0;
 }
