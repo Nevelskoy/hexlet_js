@@ -10,8 +10,10 @@
 //#include <cstdio>
 //#include <cstdarg>
 #include "other.h"
+#include <time.h>
 
 
+#define	  stop __asm nop
 				
 int _tmain()
 {
@@ -34,7 +36,7 @@ int _tmain()
 	//Вызов функции PrintArray   может выглядеть так:
 //	PrintArray(ar, ... может быть, понадобится передать еще какие-нибудь данные);  //Важно! первый параметр- имя двумерного (!) массива
 	std::cout << "The regular array:" << std::endl;
-	PrintArray(ar, N, M);
+	PrintArray(ar, N);
 
 	std::cout << std::endl;
 	//2. динамического двумерного массива (обе размерности вычисляются)
@@ -46,10 +48,10 @@ int _tmain()
 	for (size_t i = 0; i < N * M; i++) {
 		*(pArr + i) = rand() % 10;
 	}
-
+	
 	std::cout << "The dynamic array:" << std::endl;
 	PrintArray(pArr, N, M);
-
+	delete[] pArr;
 #endif
 /////////////////////////////////////////////////////////////////////////////
 	//Задание 2.
@@ -71,16 +73,20 @@ int _tmain()
 		{31,28,31,30,31,30,31,31,30,31,30,31}, //невисокосный год
 		{31,29,31,30,31,30,31,31,30,31,30,31} };	//високосный год
 
-	size_t day = 22, month = 7, year = 1986;
+	size_t day = 15, month = 12, year = 2023;
 	//size_t numDay = DayOfYear(day, month, year, nDayTab);  //Важно! последний параметр- имя двумерного (!) массива
 	size_t numDay = DayOfYear(day, month, year, nDayTab);
 	std::cout << "DayOfYear: " << numDay << std::endl;
 
-	
-
 
 	//Проверка результата обратной функцией DayOfMonth        //Важно! последний параметр- имя двумерного (!) массива
-	//...
+	int day_of_year = 60, curr_year = 2004;
+	int result_day = 0;
+	int result_month = 0;
+	DayOfMonth(day_of_year, curr_year, result_day, result_month, nDayTab);
+	std::cout << "Month: " << result_month << std::endl;
+	std::cout << "Day: " << result_day << std::endl;
+
 #endif
 	
 /////////////////////////////////////////////////////////////////////////////
@@ -96,7 +102,6 @@ int _tmain()
 	VarArgs(nN1,0);	
 	VarArgs(nN1,nN2,0);	
 	VarArgs(nN1,nN2,nN3,nN4,nN5,0);	
-	stop
 	std::cout << std::endl;
 
 	//Задание 3б. Модифицируйте функцию 3а с помощью макросов
@@ -105,7 +110,7 @@ int _tmain()
 	VarArgsMacro(nN1, 0);
 	VarArgsMacro(nN1, nN2, 0);
 	VarArgsMacro(nN1, nN2, nN3, nN4, nN5, 0);
-	stop
+
 
 #endif
 ///////////////////////////////////////////////////////////////////
@@ -118,9 +123,10 @@ float A, B, C;
 	printf("Enter A, B, C: ");
 	scanf_s("%f %f %f", &A, &B, &C);
 	printf("Table of values:\n");
-	float x = -2;
+	double x = -2;
+	double y;
 	while (x <= 2) {
-		float y = A * x * x + B * x + C;
+		y = A * x * x + B * x + C;
 		printf("%.1f | %.1f\n", x, y);
 		x += 0.5;
 	}
@@ -148,11 +154,52 @@ float A, B, C;
 	//а Вы выводите результат. Результат получаете посредством вызова
 	//соответствующей Вашей функции по указателю.
 	//Предусмотрите возможность ввода непредусмотренного знака операции
+#if 0
+		double(*ptrFunc) (double, double) = nullptr; 
+		int op1 = 0, op2 = 0;
+		double result = 0;
+		char operand = 0, ch='y';
+		
+		while (ch!='N') {
+			ptrFunc = nullptr;
+			printf("Enter operand 1: ");
+			std::cin >> op1;
+			printf("Enter operand 2: ");
+			std::cin >> op2;
+			printf("Enter operator: ");
+			std::cin >> operand;
+			switch (operand)
+			{
+			case '+': 
+				ptrFunc = Sum;
+				break;
+			case '-': 
+				ptrFunc = Sub;
+				break;
+			case '/': 
+				ptrFunc = Div;
+				break;
+			case '*': 
+				ptrFunc = Mul;
+				break;
+			case '^': 
+				ptrFunc = pow;
+				break;
+			default:
+				printf("Error!");
+				break;
+			}
+			if (ptrFunc) {
+				result = ptrFunc(op1, op2);
+				std::cout << "Result: " << result;
+			}
+			printf("\nContinue? (Y/N): ");
+			std::cin >> ch;
+		}
+#endif
 
-
-	
-		///////////////////////////////////////////////////////////////////
-#if 1
+///////////////////////////////////////////////////////////////////
+#if 0
 	//Задание 6. Указатель на функцию в качестве аргумента.
 	//Дана заготовка функции сортировки любых объектов - Sort.
 	//Функция принимает следующие параметры:
@@ -180,7 +227,7 @@ float A, B, C;
 		//Вызов сортировки
 
 		Sort(reinterpret_cast<char*>(&nAr[0]), nTotal, sizeof(int), SwapInt, CmpInt);
-		
+
 		//Печать результатов сортировки
 
 		PrAr(nAr, nTotal);
@@ -188,9 +235,9 @@ float A, B, C;
 		std::cout << std::endl;
 		std::cout << "Compare Double: " << std::endl;
 		std::cout << std::endl;
-	//Задание 6б. По аналогии с 6а создайте вспомогательные
-	//функции - SwapDouble и CmpDouble и вызовите функцию Sort
-	//для сортировки массива вещественных значений.
+		//Задание 6б. По аналогии с 6а создайте вспомогательные
+		//функции - SwapDouble и CmpDouble и вызовите функцию Sort
+		//для сортировки массива вещественных значений.
 		double DnAr[] = { 8.0, 33.23, 15.2, 55.0, 6.23 };
 		int DnTotal = 5;
 
@@ -199,60 +246,58 @@ float A, B, C;
 		Sort(reinterpret_cast<char*>(&DnAr[0]), nTotal, sizeof(double), SwapDouble, CmpDouble);
 
 		PrAr(DnAr, DnTotal);
-	
-	//Задание 6в*. По аналогии с 6а создайте вспомогательные
-	//функции - SwapStr и CmpStr и вызовите функцию Sort
-	//для сортировки массива указателей на строки.
-		char strTmp[] = "Hello";
-		const char* arStr[] = { strTmp, "QQQ", "SDF", "ABC", "Abba", "ENFR", "En"};
 
-		int size_arStr = 7;
+		//Задание 6в*. По аналогии с 6а создайте вспомогательные
+		//функции - SwapStr и CmpStr и вызовите функцию Sort
+		//для сортировки массива указателей на строки.
+
+		const char* arStr[] = { "Sold", "Meta", "John", "Xeon", "ENFR", "12312" };
+
+		int size_arStr = 6;
+		//Замечание:
 		std::cout << std::endl;
-	//Замечание:
-	
-	//в массиве линейно лежат АДРЕСА строк, надо передать АДРЕС массива, 
+		//в массиве линейно лежат АДРЕСА строк, надо передать АДРЕС массива, 
 		Sort(reinterpret_cast<char*>(&arStr[0]), size_arStr, sizeof(arStr[0]), SwapChar, CmpChar);
-		
+
 		int size = sizeof(arStr) / sizeof(arStr[0]);
 		for (int i = 0; i < size; i++) {
 			std::cout << arStr[i] << std::endl;
 		}
 #endif
 ///////////////////////////////////////////////////////////////////
-#if 0
+#if 1
 	//Задание 7. Массивы указателей на функцию.
 	//Напишите несколько функций вида
-	const char* GetString1();   
-	const char* GetString2();
-	const char* GetString3();
-	const char* GetString4();
-	const char* GetString5();
+		const char* GetString1();
+		const char* GetString2();
+		const char* GetString3();
+		const char* GetString4();
+		const char* GetString5();
 
-	//		...., каждая из функций возвращает указатель на свою строку
-	//(подумайте - какой адрес Вы имеете право возвращать из функции)
-	
-	// Вам предоставлен код этих функций. 
-	//Подумайте:
-	//1) все ли они корректны, если нет, то как исправить некорректность
-	//2) может быть требуются какие-то дополнительные действия
+		//		...., каждая из функций возвращает указатель на свою строку
+		//(подумайте - какой адрес Вы имеете право возвращать из функции)
 
-	//Объявите и проинициализируйте массив указателей на функции
-	//GetString1,GetString2...
-	//Введите номер функции, которую Вы хотите вызвать:
-		int n = 1;
+		// Вам предоставлен код этих функций. 
+		//Подумайте:
+		//1) все ли они корректны, если нет, то как исправить некорректность
+		//2) может быть требуются какие-то дополнительные действия
+
+		//Объявите и проинициализируйте массив указателей на функции
+		//GetString1,GetString2...
+		//Введите номер функции, которую Вы хотите вызвать:
+		int n = 0;
 
 		const char* (*funcPtr[5])() = { GetString1, GetString2, GetString3, GetString4, GetString5 };
 
 
-	//Вызовите функцию
+		//Вызовите функцию
 
 		const char* result = funcPtr[n]();
 
-	//Распечатайте результат
+		//Распечатайте результат
 		std::cout << result;
 
 #endif
-
 ////////////////////////////////////////////////////////////////////////////
 	//Задание 8*.
 	//Создайте одномерный массив (размерность вычисляется в процессе
