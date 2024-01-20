@@ -3,7 +3,9 @@
 #include "other.h"
 
 
-///////////////////////////////////////////////////
+
+//TASK_3/////////////////////////////////////////////////
+
 //Подсказка-заготовка для задания 5а
 //Без использования макросов
 
@@ -44,14 +46,29 @@ void VarArgsMacro(int arg1, ...) {
 	va_end(ptr); //NULL;
 }
 
-///////////////////////////////////////////////////
+//TASK_2/////////////////////////////////////////////////
 bool isLeapYear(int year) {
 	return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 };
 
 
-int DayOfMonth(int DayOfYear, int year) {
-	return 0;
+void DayOfMonth(int day_of_year, int curr_year, int &result_day, int &result_month , int nDayTab[][12]) {
+	int buffer = 0;
+	if (isLeapYear(curr_year)) {
+		for (int i = 0; buffer < day_of_year; i++) {
+			buffer += nDayTab[1][i];
+			result_month += 1;
+			result_day = nDayTab[1][i] - (buffer - day_of_year);
+		}
+		
+	}
+	else {
+		for (int i = 0; buffer < day_of_year; i++) {
+			buffer += nDayTab[0][i];
+			result_month += 1;
+			result_day = nDayTab[0][i] - (buffer - day_of_year);
+		}
+	}
 };
 
 
@@ -60,12 +77,12 @@ int DayOfYear(size_t day, size_t month, size_t year, int nDayTab[][12]) {
 	int month_day = 0;
 	if (isLeapYear(year)) {
 		for (size_t i = 0; i < month - 1; i++) {
-			month_day += nDayTab[0][i];
+			month_day += nDayTab[1][i];
 		}
 	}
 	else {
 		for (size_t i = 0; i < month - 1; i++) {
-			month_day += nDayTab[1][i];
+			month_day += nDayTab[0][i];
 		}
 	}
 	result = month_day + day;
@@ -74,8 +91,8 @@ int DayOfYear(size_t day, size_t month, size_t year, int nDayTab[][12]) {
 };
 
 
-///////////////////////////////////////////////////
-void PrintArray(int (*ar)[M], size_t N, size_t M) {
+//TASK_1/////////////////////////////////////////////////
+void PrintArray(int (*ar)[M], size_t N) {
 	for (size_t i = 0; i < N * M; i++) {
 		if ((i % M == 0) && (i != 0)) {
 			std::cout << std::endl;
@@ -95,7 +112,34 @@ void PrintArray(int *pArr, size_t N, size_t M) {
 	}
 }
 
-//TASK_6/////////////////////////////////////////////////
+
+
+//TASK_5/////////////////////////////////////////////////
+double Sum(double op1, double op2) {
+	return (op1 + op2);
+}
+
+
+double Sub(double op1, double op2) {
+	return (op1 - op2);
+}
+
+
+double Mul(double op1, double op2) {
+	return (op1 * op2);
+}
+
+
+double Div(double op1, double op2) {
+	if (op2 != 0) {
+		return (op1 / op2);
+	}
+	std::cout << "Error! Div = 0!" << std::endl;
+		return 0;
+}
+
+
+
 void Sort(char* pcFirst, int nNumber, int size,
 	void(*Swap)(void*, void*), int(*Compare)(void*, void*))
 {
@@ -151,9 +195,9 @@ void SwapDouble(void* p1, void* p2)
 
 void SwapChar(void* p1, void* p2)
 {
-	char** ptr1 = static_cast<char**>(p1);
-	char** ptr2 = static_cast<char**>(p2);
-	char* tmp = *ptr1;
+	char* ptr1 = static_cast<char*>(p1);
+	char* ptr2 = static_cast<char*>(p2);
+	char tmp = *ptr1;
 	*ptr1 = *ptr2;
 	*ptr2 = tmp;
 }
@@ -176,8 +220,8 @@ int CmpDouble(void* p1, void* p2)
 
 int CmpChar(void* p1, void* p2)
 {
-	char** ptr1 = static_cast< char**>(p1);
-	char** ptr2 = static_cast< char**>(p2);
+	const char** ptr1 = static_cast<const char**>(const_cast<void*>(p1));
+	const char** ptr2 = static_cast<const char**>(const_cast<void*>(p2));
 	return strcmp(*ptr1,*ptr2);
 }
 //-----------------------------------------------------------------------
@@ -206,6 +250,6 @@ const char* GetString4()
 //-----------------------------------------------------------------------
 const char* GetString5()
 {
-	char* str = new char[strlen("time")+1];
+	char* str = new char[strlen("time") + 1];
 	return str;
 }
