@@ -1,5 +1,0 @@
-﻿  MyString.cpp
-  test_mystring.cpp
-  Generating Code...
-D:\УЧЁБА\ПОЛИТЕХ\DEV-C200\Решение\Lab_6_2\Lab_6_2\MyString.cpp(106): warning C4715: 'MyString::getString': not all control paths return a value
-  Lab_6_2.vcxproj -> D:\УЧЁБА\ПОЛИТЕХ\DEV-C200\Решение\Lab_6_2\Debug\Lab_6_2.exe
