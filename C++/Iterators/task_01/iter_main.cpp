@@ -31,7 +31,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 
 	copy(vecPoints.begin(), vecPoints.end(), inserter(newVec, newVec.end()));
-    printContainer(newVec);
+	printContainer(newVec);
 	
 	vector<Point> exclPoint = { {-1,-1}, {-2,-2} };
 
@@ -39,5 +39,5 @@ int _tmain(int argc, _TCHAR* argv[])
 	printContainer(setPoints);
 
 	
-    return 0;
+	return 0;
 }
