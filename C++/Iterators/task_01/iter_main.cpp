@@ -37,6 +37,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	copy(exclPoint.begin(), exclPoint.end(), inserter(setPoints, setPoints.begin()));
 	printContainer(setPoints);
-	  
+
+	
     return 0;
 }
