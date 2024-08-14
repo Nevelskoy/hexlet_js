@@ -9,7 +9,7 @@ using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    set<Point> setPoints = { {1,1}, {2,2}, {3,3}, {4,4}, {5,5} };
+	set<Point> setPoints = { {1,1}, {2,2}, {3,3}, {4,4}, {5,5} };
 	vector<Point> vecPoints(setPoints.rbegin(), setPoints.rend());
 
 	sort(vecPoints.rbegin(), vecPoints.rend());
