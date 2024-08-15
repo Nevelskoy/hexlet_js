@@ -20,19 +20,19 @@ auto SumCont(const A& a, const B& b) {
 }
 
 //////////(.cpp)//////////
-#if 0
-	{
-		std::vector<int> v{ 1,2,3,4 };
-		std::list<double> l{ 1.1, 2.2, 3.3, 4.4, 5.5 };
-		auto v1 = SumCont(v, l);
 
-		std::list<int> ll{ 1, 2, 3, 4, 5, 6, 7, 8 };
-		double ar[] = { 1.1, 2.2, 3.3, 4.4, 5.5 };
-		auto v2 = SumCont(ar, ll);
+{
+	std::vector<int> v{ 1,2,3,4 };
+	std::list<double> l{ 1.1, 2.2, 3.3, 4.4, 5.5 };
+	auto v1 = SumCont(v, l);
 
-		std::set<std::string> s{ "abc", "qwerty", "my" };
-		std::deque<const char*> d{ "111", "22" };
-		auto v3 = SumCont(s, d);
-		PrintAnyCont(v3);
-	}
-#endif
+	std::list<int> ll{ 1, 2, 3, 4, 5, 6, 7, 8 };
+	double ar[] = { 1.1, 2.2, 3.3, 4.4, 5.5 };
+	auto v2 = SumCont(ar, ll);
+
+	std::set<std::string> s{ "abc", "qwerty", "my" };
+	std::deque<const char*> d{ "111", "22" };
+	auto v3 = SumCont(s, d);
+	PrintAnyCont(v3);
+}
+
