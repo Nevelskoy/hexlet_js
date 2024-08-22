@@ -1,16 +1,50 @@
 #pragma once
 #include <iostream>
+#include <map>
+
+const int DEFAULT_DAY = 1;
+const int DEFAULT_MONTH = 1;
+const int DEFAULT_YEAR = 1970;
+
+std::map<int, int> daysOfMonth{ {1, 31}, {2, 28}, {3, 31},
+							   {4, 30}, {5, 31}, {6, 30},
+							   {7, 31}, {8, 31}, {9, 30},
+							   {10, 31}, {11, 30}, {12, 31} };
 
 
 class Date
 {
-	int m_day = 1;
-	int m_month = 1;
-	int m_year = 1970;
+private:
+
+	int m_day = DEFAULT_DAY;
+	int m_month = DEFAULT_MONTH;
+	int m_year = DEFAULT_YEAR;
+
+	int toDays(int d, int m, int y)
+	{
+		int days = 0;
+		for (size_t i = 0; i < m; ++i) {
+			days += daysOfMonth[i];
+		}
+		return (365 * y + days + d);
+	}
+
+	bool isCorrect() {
+		return (GetDay() <= daysOfMonth[m_month] && GetDay() > 0)
+			&& (GetMonth() < 13 && GetMonth() > 0)
+			&& (GetYear() > 1969 && GetYear() < 2100);
+	}
 
 public:
 	Date() = default;
-	Date(int d, int m, int y) : m_day(d), m_month(m), m_year(y) {};
+	Date(int d, int m, int y) : m_day(d), m_month(m), m_year(y) 
+	{
+		if (!isCorrect()) {
+			m_day = DEFAULT_DAY;
+			m_month = DEFAULT_MONTH;
+			m_year = DEFAULT_YEAR;
+		};
+	};
 	
 	int GetDay() const {
 		return m_day;
@@ -22,6 +56,14 @@ public:
 
 	int GetYear() const {
 		return m_year;
+	}
+
+	int GetDaysCount() {
+		return toDays(m_day, m_month, m_year);
+	}
+
+	Date operator+(int k) {
+		
 	}
 
 
