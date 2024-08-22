@@ -13,8 +13,7 @@ std::map<int, int> daysOfMonth{ {1, 31}, {2, 28}, {3, 31},
 							   {10, 31}, {11, 30}, {12, 31} };
 
 
-class Date
-{
+class Date {
 private:
 
 	int m_day = DEFAULT_DAY;
@@ -22,25 +21,24 @@ private:
 	int m_year = DEFAULT_YEAR;
 
 
-
-	int toDays(int d, int m, int y)
-	{
+	int toDays() const {
 		int days = 0;
-		for (size_t i = 0; i < m; ++i) {
+		for (int i = 0; i < m_month; ++i) {
 			days += daysOfMonth[i];
 		}
-		return (365 * y + days + d);
+		return (365 * m_year + days + m_day);
 	}
 
-	Date toData(int days)
-	{
+	Date toDate(int days) {
 		int restDays = days % ONE_YEAR;
 		int year = (days - restDays) / ONE_YEAR;
+
+		if (!restDays) return Date(31, 12, year);
+
 		int month = 0;
 		int day = 0;
-
-		for (int i = 0; i < daysOfMonth.size(); ++i) {
-			if (restDays < 0) {
+		for (int i = 0; i < daysOfMonth.size() + 1; ++i) {
+			if (restDays <= 0) {
 				month = --i;
 				day = daysOfMonth[i] + restDays;
 				break;
@@ -79,15 +77,19 @@ public:
 		return m_year;
 	}
 
-	int GetDaysCount() {
-		return toDays(m_day, m_month, m_year);
+	int GetDaysCount() const {
+		return toDays();
 	}
 
 	Date operator+(int k) {
-		
+		 return toDate(this->toDays() + k);		
 	}
 
-
+	Date operator-(int k) {
+		int x = this->toDays();
+		int y = x - k;
+		return toDate(y);
+	}
 
 };
 
