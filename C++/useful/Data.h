@@ -5,6 +5,7 @@
 const int DEFAULT_DAY = 1;
 const int DEFAULT_MONTH = 1;
 const int DEFAULT_YEAR = 1970;
+const int ONE_YEAR = 365;
 
 std::map<int, int> daysOfMonth{ {1, 31}, {2, 28}, {3, 31},
 							   {4, 30}, {5, 31}, {6, 30},
@@ -20,6 +21,8 @@ private:
 	int m_month = DEFAULT_MONTH;
 	int m_year = DEFAULT_YEAR;
 
+
+
 	int toDays(int d, int m, int y)
 	{
 		int days = 0;
@@ -27,6 +30,24 @@ private:
 			days += daysOfMonth[i];
 		}
 		return (365 * y + days + d);
+	}
+
+	Date toData(int days)
+	{
+		int restDays = days % ONE_YEAR;
+		int year = (days - restDays) / ONE_YEAR;
+		int month = 0;
+		int day = 0;
+
+		for (int i = 0; i < daysOfMonth.size(); ++i) {
+			if (restDays < 0) {
+				month = --i;
+				day = daysOfMonth[i] + restDays;
+				break;
+			}
+			restDays -= daysOfMonth[i];
+		}
+		return Date(day, month, year);
 	}
 
 	bool isCorrect() {
@@ -65,6 +86,7 @@ public:
 	Date operator+(int k) {
 		
 	}
+
 
 
 };
