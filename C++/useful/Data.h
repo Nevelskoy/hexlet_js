@@ -5,54 +5,78 @@
 const int DEFAULT_DAY = 1;
 const int DEFAULT_MONTH = 1;
 const int DEFAULT_YEAR = 1970;
-const int ONE_YEAR = 365;
-
-std::map<int, int> daysOfMonth{ {1, 31}, {2, 28}, {3, 31},
-							   {4, 30}, {5, 31}, {6, 30},
-							   {7, 31}, {8, 31}, {9, 30},
-							   {10, 31}, {11, 30}, {12, 31} };
+const int YEAR_WITHOUT_FEB = 337;
 
 
 class Date {
 private:
+	int m_day = DEFAULT_DAY, m_month = DEFAULT_MONTH, m_year = DEFAULT_YEAR;
 
-	int m_day = DEFAULT_DAY;
-	int m_month = DEFAULT_MONTH;
-	int m_year = DEFAULT_YEAR;
+	int GetDaysInFeb(int year) const {
+		if ((!(year % 4) && !(year % 100)) || !(year % 400)) {
+			return 29;
+		}
+		return 28;
+	}
 
+	int GetDaysInMonth(int month, int year) const {
+		switch (month)
+		{
+		case 2:
+			return GetDaysInFeb(year);
+		case 1:
+		case 3:
+		case 5:
+		case 7:
+		case 8:
+		case 10:
+		case 12:
+			return 31;
+		default:
+			return 30;
+		}
+	}
 
-	int toDays() const {
+	int GetDaysInYear(int year) const {
+		return YEAR_WITHOUT_FEB + GetDaysInFeb(year);
+	}
+
+	bool isCorrect() const {
+		return (GetMonth() <= 12 && GetMonth() > 0) && (GetDay() > 0 && GetDay() <= GetDaysInMonth(GetMonth(), GetYear()));
+	}
+
+	int DaysPassedToMonth(int month, int year) const {
 		int days = 0;
-		for (int i = 0; i < m_month; ++i) {
-			days += daysOfMonth[i];
+		for (int i = 1; i < month; ++i) {
+			days += GetDaysInMonth(i, year);
 		}
-		return (365 * m_year + days + m_day);
+		return days;
 	}
 
-	Date toDate(int days) {
-		int restDays = days % ONE_YEAR;
-		int year = (days - restDays) / ONE_YEAR;
-
-		if (!restDays) return Date(31, 12, year);
-
-		int month = 0;
-		int day = 0;
-		for (int i = 0; i < daysOfMonth.size() + 1; ++i) {
-			if (restDays <= 0) {
-				month = --i;
-				day = daysOfMonth[i] + restDays;
-				break;
-			}
-			restDays -= daysOfMonth[i];
+	int GetDays() const {
+		int days = 0;
+		for (int i = DEFAULT_YEAR; i < GetYear(); ++i) {
+			days += GetDaysInYear(i);
 		}
-		return Date(day, month, year);
+		return days + DaysPassedToMonth(GetMonth(), GetYear()) + GetDay();
 	}
 
-	bool isCorrect() {
-		return (GetDay() <= daysOfMonth[m_month] && GetDay() > 0)
-			&& (GetMonth() < 13 && GetMonth() > 0)
-			&& (GetYear() > 1969 && GetYear() < 2100);
+	void SetFromDays(int inp_days) {
+		m_month = DEFAULT_MONTH;
+		m_year = DEFAULT_YEAR;
+
+		while (inp_days > GetDaysInYear(GetYear())) {
+			inp_days -= GetDaysInYear(GetYear());
+			++m_year;
+		}
+
+		while (inp_days > DaysPassedToMonth(GetMonth() + 1, GetYear())) {
+			++m_month;
+		}
+
+		m_day = inp_days - DaysPassedToMonth(GetMonth(), GetYear());
 	}
+
 
 public:
 	Date() = default;
@@ -78,17 +102,24 @@ public:
 	}
 
 	int GetDaysCount() const {
-		return toDays();
+		return GetDays();
 	}
 
-	Date operator+(int k) {
-		 return toDate(this->toDays() + k);		
+	Date operator + (int k) const {
+		Date result(*this);
+		result.SetFromDays(result.GetDays() + k);
+		return result;
 	}
 
-	Date operator-(int k) {
-		int x = this->toDays();
-		int y = x - k;
-		return toDate(y);
+	Date operator - (int k) const {
+		Date result(*this);
+		result.SetFromDays(result.GetDays() - k);
+		return result;
+	}
+
+	int operator-(Date& other) {
+		int diff = this->GetDays() - other.GetDays();
+		return diff;
 	}
 
 };
