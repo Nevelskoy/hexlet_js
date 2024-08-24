@@ -1,15 +1,20 @@
 #include <vector>
 #include <future>
+#include <mutex>
 #include <iostream>
 
 using namespace std;
 
 struct Account {
     int balance = 0;
+    vector<int> history;
+    mutex m;
 
     bool Spend(int value){
+        lock_guard<mutex> g(m);
         if (value <= balance) {
             balance -= value;
+            history.push_back(value);
             return true;
         }
         return false;
